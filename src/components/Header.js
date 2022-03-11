@@ -4,8 +4,10 @@ import { BiMenuAltRight } from 'react-icons/bi'
 import { AiOutlineClose } from 'react-icons/ai'
 
 import classes from './Header.module.scss'
+import { Link, useNavigate } from 'react-router-dom'
 
 const Header = () => {
+  const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const [size, setSize] = useState({
     width: undefined,
@@ -34,28 +36,35 @@ const Header = () => {
     setMenuOpen((p) => !p);
   }
 
+  const loginClickHandler = () => {
+    menuToggleHandler();
+    navigate('./login');
+  }
+
   return (
     <header className={classes.header} >
       <div className={classes.header__content}>
-        <h2 className={classes.header__content__logo} >navbar</h2>
+        <Link to='/' className={classes.header__content__logo} >
+            navbar
+        </Link>
 
-        <nav className={`${classes.header__content__nav} ${menuOpen ? classes.isMenu : ""}`}>
+        <nav className={`${classes.header__content__nav} ${menuOpen && size.width < 768 ? classes.isMenu : ""}`}>
           <ul>
             <li>
-              <a href='/'>Page One</a>
+              <Link to='/page-one' onClick={menuToggleHandler}>Page One</Link>
             </li>
             <li>
-              <a href='/'>Page Two</a>
+              <Link to='/page-two' onClick={menuToggleHandler}>Page Two</Link>
             </li>
             <li>
-              <a href='/'>Page Three</a>
+              <Link to='/page-three' onClick={menuToggleHandler}>Page Three</Link>
             </li>
           </ul>
-          <button>Login</button>
+          <button onClick={loginClickHandler} >Login</button>
         </nav>
 
         <div className={classes.header__content__toggle}>
-          {!menuOpen ? <BiMenuAltRight onClick={menuToggleHandler} /> : <AiOutlineClose onClick={menuToggleHandler} /> }
+          {!menuOpen ? <BiMenuAltRight onClick={menuToggleHandler} /> : <AiOutlineClose onClick={menuToggleHandler} />}
         </div>
 
       </div>
